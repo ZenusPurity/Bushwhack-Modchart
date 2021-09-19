@@ -819,7 +819,7 @@ class PlayState extends MusicBeatState
 		}
 
 		Conductor.songPosition = -5000;
-		Conductor.rawPosition = Conductor.songPosition;
+		Conductor.songPosition = Conductor.songPosition;
 
 		strumLine = new FlxSprite(0, 50).makeGraphic(FlxG.width, 10);
 		strumLine.scrollFactor.set();
@@ -2701,7 +2701,7 @@ class PlayState extends MusicBeatState
 			if (startedCountdown)
 			{
 				Conductor.songPosition += FlxG.elapsed * 1000;
-				Conductor.rawPosition = Conductor.songPosition;
+				Conductor.songPosition = Conductor.songPosition;
 				if (Conductor.songPosition >= 0)
 					startSong();
 			}
@@ -2709,8 +2709,7 @@ class PlayState extends MusicBeatState
 		else
 		{
 			// Conductor.songPosition = FlxG.sound.music.time;
-			Conductor.songPosition += FlxG.elapsed * 1000;
-			Conductor.rawPosition = FlxG.sound.music.time;
+			Conductor.songPosition += (FlxG.elapsed * 1000) * songMultiplier;
 			/*@:privateAccess
 				{
 					FlxG.sound.music._channel.
@@ -3094,14 +3093,14 @@ class PlayState extends MusicBeatState
 						if (daNote.mustPress)
 						{
 							daNote.y = (playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y
-								+ 0.45 * ((Conductor.rawPosition - daNote.strumTime) / songMultiplier) * 
+								+ 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * 
 								(FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
 									2) )) 
 								- daNote.noteYOff;
 						}
 						else
 							daNote.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y
-								+ 0.45 * ((Conductor.rawPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+								+ 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
 									2))) - daNote.noteYOff;
 						if (daNote.isSustainNote)
 						{
@@ -3140,11 +3139,11 @@ class PlayState extends MusicBeatState
 					{
 						if (daNote.mustPress)
 							daNote.y = (playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y
-								- 0.45 * ((Conductor.rawPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+								- 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
 									2))) + daNote.noteYOff;
 						else
 							daNote.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y
-								- 0.45 * ((Conductor.rawPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+								- 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
 									2))) + daNote.noteYOff;
 						if (daNote.isSustainNote)
 						{
