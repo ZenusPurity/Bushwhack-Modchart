@@ -119,6 +119,29 @@ class CpuStrums extends Option
 
 }
 
+class Modcharts extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.modcharts = !FlxG.save.data.modcharts;
+		
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return  FlxG.save.data.modcharts ? "With Modcharts" : "No Modcharts";
+	}
+
+}
+
 class GraphicLoading extends Option
 {
 	public function new(desc:String)

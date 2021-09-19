@@ -357,11 +357,29 @@ class PlayState extends MusicBeatState
 		removedVideo = false;
 
 		#if cpp
-		executeModchart = FileSystem.exists(Paths.lua(songLowercase + "/modchart"));
-		if (isSM)
-			executeModchart = FileSystem.exists(pathToSm + "/modchart.lua");
-		PlayStateChangeables.Optimize = false;
+			switch (songLowercase)
+			{
+				case 'foolhardy':
+				{
+					executeModchart = FileSystem.exists(Paths.lua(songLowercase + "/modchart"));
+					if (isSM)
+						executeModchart = FileSystem.exists(pathToSm + "/modchart.lua");
+					PlayStateChangeables.Optimize = false;
+				}
+
+				case 'bushwhack':
+				{
+					if (FlxG.save.data.modcharts)
+					{
+						executeModchart = FileSystem.exists(Paths.lua(songLowercase + "/modchart"));
+						if (isSM)
+							executeModchart = FileSystem.exists(pathToSm + "/modchart.lua");
+						PlayStateChangeables.Optimize = false;
+					}
+				}
+			}
 		#end
+
 		#if !cpp
 		executeModchart = false; // FORCE disable for non cpp targets
 		#end
@@ -1893,7 +1911,12 @@ class PlayState extends MusicBeatState
 			}
 
 			babyArrow.playAnim('static');
-			babyArrow.x += 50;
+
+			if (FlxG.save.data.modcharts)
+				babyArrow.x += 100;
+			else 
+				babyArrow.x += 50;
+
 			babyArrow.x += ((FlxG.width / 2) * player);
 
 			if (PlayStateChangeables.Optimize)
@@ -1912,7 +1935,9 @@ class PlayState extends MusicBeatState
 	{
 		strumLineNotes.forEach(function(babyArrow:FlxSprite)
 		{
-			if (isStoryMode)
+			if (FlxG.save.data.modcharts && curSong == "Bushwhack")
+				babyArrow.alpha = 0;
+			else 
 				babyArrow.alpha = 1;
 		});
 	}
